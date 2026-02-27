@@ -147,6 +147,16 @@ function normalizeArticles(payload) {
   return [];
 }
 
+function uniqueByUrlOrTitle(items) {
+  const seen = new Set();
+  return items.filter((item) => {
+    const key = (item.url || item.title || "").trim();
+    if (!key || seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+}
+
 function renderNews(news) {
   const list = byId("news-list");
   list.innerHTML = "";
@@ -176,31 +186,34 @@ async function fetchNews() {
       if (!response.ok) continue;
       const payload = await response.json();
       fetched = fetched.concat(normalizeArticles(payload));
-      if (fetched.length >= 10) break;
+      if (fetched.length >= 30) break;
     } catch {
       // try next source
     }
   }
 
-  const filtered = fetched.filter(isExamRelevant);
-  const deduped = filtered.filter((item) => {
+  const filtered = uniqueByUrlOrTitle(fetched.filter(isExamRelevant));
+  const unseen = filtered.filter((item) => {
     const key = item.url || item.title;
-    if (!key) return false;
-    if (state.seenNews.includes(key)) return false;
-    state.seenNews.push(key);
-    return true;
+    return key && !state.seenNews.includes(key);
   });
 
-  state.seenNews = state.seenNews.slice(-300);
+  unseen.forEach((item) => state.seenNews.push(item.url || item.title));
+  state.seenNews = state.seenNews.slice(-500);
   localStorage.setItem("joa-seen-news", JSON.stringify(state.seenNews));
 
-  const toRender = deduped.length ? deduped : filtered.length ? filtered : state.cachedNews.length ? state.cachedNews : CURRENT_AFFAIRS_FALLBACK;
+  const merged = uniqueByUrlOrTitle([
+    ...unseen,
+    ...filtered,
+    ...state.cachedNews,
+    ...CURRENT_AFFAIRS_FALLBACK
+  ]);
+
+  const toRender = merged.slice(0, 10);
   renderNews(toRender);
 
-  if (toRender.length) {
-    state.cachedNews = toRender;
-    localStorage.setItem("joa-cached-news", JSON.stringify(state.cachedNews));
-  }
+  state.cachedNews = merged.slice(0, 40);
+  localStorage.setItem("joa-cached-news", JSON.stringify(state.cachedNews));
 
   byId("news-timer").textContent = "Refreshing every 60s";
 }
