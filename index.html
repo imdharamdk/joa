@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JOA IT Prep MVP</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>HPSSC / HPRCA JOA (IT) Prep</h1>
+    <p>Current Affairs • Quiz • Himachal GK • Leaderboard</p>
+  </header>
+
+  <main>
+    <section class="card" id="auth-card">
+      <h2>Login / Register</h2>
+      <form id="auth-form">
+        <input id="name" placeholder="Name" required />
+        <input id="email" type="email" placeholder="Email" required />
+        <button type="submit">Continue</button>
+      </form>
+      <p id="auth-status"></p>
+    </section>
+
+    <section class="card">
+      <div class="row">
+        <h2>Live Exam-Relevant Current Affairs</h2>
+        <span id="news-timer">Refreshing every 60s</span>
+      </div>
+      <button id="refresh-news" class="secondary">Refresh News Now</button>
+      <ul id="news-list"></ul>
+    </section>
+
+    <section class="card">
+      <div class="row">
+        <h2>Quiz (10 Questions)</h2>
+        <div>
+          <span id="quiz-meta"></span>
+          <button id="refresh-quiz" class="secondary">Refresh Questions</button>
+        </div>
+      </div>
+      <form id="quiz-form"></form>
+      <div class="row">
+        <button id="submit-quiz">Submit Quiz</button>
+        <button id="reset-attempts" class="danger">Reset Attempt History</button>
+      </div>
+      <p id="score-output"></p>
+    </section>
+
+    <section class="card">
+      <h2>Daily Leaderboard (Local MVP)</h2>
+      <ol id="leaderboard-list"></ol>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
