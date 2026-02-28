@@ -17,11 +17,19 @@
         <span id="news-timer">Refreshing every 60s</span>
       </div>
     </div>
+  <title>JOA IT Prep MVP</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>HPSSC / HPRCA JOA (IT) Prep</h1>
+    <p>Current Affairs • Quiz • Himachal GK • Leaderboard</p>
   </header>
 
   <main>
     <section class="card" id="auth-card">
       <h2>Quick Login</h2>
+      <h2>Login / Register</h2>
       <form id="auth-form">
         <input id="name" placeholder="Name" required />
         <input id="email" type="email" placeholder="Email" required />
@@ -36,6 +44,9 @@
         <button id="refresh-news" class="secondary">Refresh News</button>
       </div>
       <p class="sub">Auto-updates every 1 minute • Showing 10 items • Non-repeat where possible</p>
+        <span id="news-timer">Refreshing every 60s</span>
+      </div>
+      <button id="refresh-news" class="secondary">Refresh News Now</button>
       <ul id="news-list"></ul>
     </section>
 
@@ -43,6 +54,8 @@
       <div class="row">
         <h2>Hard Quiz (100 Questions / Attempt)</h2>
         <div class="row">
+        <h2>Quiz (10 Questions)</h2>
+        <div>
           <span id="quiz-meta"></span>
           <button id="refresh-quiz" class="secondary">Refresh Questions</button>
         </div>
@@ -54,6 +67,8 @@
       </div>
       <form id="quiz-form"></form>
       <div class="row actions">
+      <form id="quiz-form"></form>
+      <div class="row">
         <button id="submit-quiz">Submit Quiz</button>
         <button id="reset-attempts" class="danger">Reset Attempt History</button>
       </div>
@@ -62,6 +77,7 @@
 
     <section class="card">
       <h2>Leaderboard</h2>
+      <h2>Daily Leaderboard (Local MVP)</h2>
       <ol id="leaderboard-list"></ol>
     </section>
   </main>
