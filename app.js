@@ -10,7 +10,11 @@ const state = {
   questionBank: [],
   currentQuiz: [],
   timerLeft: QUIZ_SECONDS,
-  timerInterval: null
+  timerInterval: null,
+  newsInFlight: false,
+  newsPollTimeout: null,
+  newsTickInterval: null,
+  nextNewsAt: 0
 };
 
 const byId = (id) => document.getElementById(id);
@@ -25,14 +29,34 @@ function shuffle(arr) {
 }
 
 async function apiGet(action) {
-  const res = await fetch(`api.php?action=${encodeURIComponent(action)}`);
+  const nonce = Date.now(); // cache-busting for auto refresh
+  const res = await fetch(`api.php?action=${encodeURIComponent(action)}&_=${nonce}`, { cache: "no-store" });
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
   return res.json();
+}
+
+function setNextRefreshTarget(ms) {
+  state.nextNewsAt = Date.now() + ms;
+}
+
+function startNewsCountdown() {
+  clearInterval(state.newsTickInterval);
+  state.newsTickInterval = setInterval(() => {
+    if (!state.nextNewsAt) return;
+    const leftMs = state.nextNewsAt - Date.now();
+    if (leftMs <= 0) {
+      byId("news-timer").textContent = "Auto refresh due now...";
+      return;
+    }
+    const leftSec = Math.ceil(leftMs / 1000);
+    byId("news-timer").textContent = `Next auto refresh in ${leftSec}s`;
+  }, 1000);
 }
 
 function renderNews(items) {
   const list = byId("news-list");
   list.innerHTML = "";
+
   const deduped = items.filter((x) => {
     const key = x.url || x.title;
     if (!key) return false;
@@ -41,7 +65,9 @@ function renderNews(items) {
     return true;
   });
 
-  const chosen = (deduped.length ? deduped : items).slice(0, 10);
+  const pool = deduped.length ? deduped : shuffle(items);
+  const chosen = pool.slice(0, 10);
+
   chosen.forEach((a, i) => {
     const li = document.createElement("li");
     li.innerHTML = `<a href="${a.url || '#'}" target="_blank" rel="noopener noreferrer">${a.title || `Current Affairs ${i + 1}`}</a>`;
@@ -54,15 +80,26 @@ function renderNews(items) {
   byId("news-count").textContent = `News: ${chosen.length} latest`;
 }
 
-async function fetchNews() {
-  byId("news-timer").textContent = "Refreshing now...";
+async function fetchNews({ manual = false } = {}) {
+  if (state.newsInFlight) return;
+  state.newsInFlight = true;
+  byId("news-timer").textContent = manual ? "Refreshing manually..." : "Refreshing now...";
+
   try {
     const data = await apiGet("news");
     renderNews(data.items || []);
-    byId("news-timer").textContent = "Refreshing every 60s";
   } catch {
-    byId("news-timer").textContent = "News refresh failed, retrying in 60s";
+    byId("news-timer").textContent = "News refresh failed, retrying automatically";
+  } finally {
+    state.newsInFlight = false;
+    scheduleNextNewsPoll();
   }
+}
+
+function scheduleNextNewsPoll() {
+  clearTimeout(state.newsPollTimeout);
+  setNextRefreshTarget(NEWS_REFRESH_MS);
+  state.newsPollTimeout = setTimeout(() => fetchNews({ manual: false }), NEWS_REFRESH_MS);
 }
 
 function renderLeaderboard() {
@@ -209,10 +246,10 @@ async function initQuestions() {
 function init() {
   initAuth();
   renderLeaderboard();
+  startNewsCountdown();
   fetchNews();
-  setInterval(fetchNews, NEWS_REFRESH_MS);
 
-  byId("refresh-news").addEventListener("click", fetchNews);
+  byId("refresh-news").addEventListener("click", () => fetchNews({ manual: true }));
   byId("refresh-quiz").addEventListener("click", pickQuiz);
   byId("submit-quiz").addEventListener("click", (e) => { e.preventDefault(); submitQuiz(); });
   byId("reset-attempts").addEventListener("click", () => {

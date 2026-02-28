@@ -9,6 +9,7 @@ This project is now implemented using **HTML, CSS, JavaScript, and PHP only**.
 ## Features
 - Live exam-relevant current affairs (server-side NewsAPI fetch through PHP)
 - Refresh every 60 seconds + manual refresh button
+- Live countdown indicator for next automatic current-affairs refresh
 - Shows 10 news items at a time
 - Hard-level syllabus-focused quiz
 - 100 questions per attempt (non-repeat based on attempt history)
