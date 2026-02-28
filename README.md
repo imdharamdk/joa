@@ -1,34 +1,30 @@
-# JOA IT Prep Pro (Static HTML/CSS/JS)
+# JOA IT Prep Pro (HTML + CSS + JS + PHP)
 
-A GitHub Pages-ready exam prep web app focused on HPSSC/HPRCA JOA (IT).
+This project is now implemented using **HTML, CSS, JavaScript, and PHP only**.
 
-## What's improved
+## Stack
+- Frontend: `index.html`, `style.css`, `app.js`
+- Backend API (PHP): `api.php`
 
-- Live current affairs + current-affairs search mode with refresh every **60 seconds**.
-- Shows **10 news items** at a time.
-- News refresh button included.
-- Non-repeat logic for news using localStorage tracking.
-- Reliable display using multi-source fetch + fallback current-affairs feed.
-- Hard-level syllabus-focused quiz bank (**140 questions total**).
-- Each attempt loads **100 questions** (non-repeat across attempts).
-- Timer automation (60 minutes), answer progress tracking, and leaderboard.
-- Enhanced dark responsive UI.
+## Features
+- Live exam-relevant current affairs (server-side NewsAPI fetch through PHP)
+- Refresh every 60 seconds + manual refresh button
+- Shows 10 news items at a time
+- Hard-level syllabus-focused quiz
+- 100 questions per attempt (non-repeat based on attempt history)
+- Leaderboard + timer + progress tracking
 
-## Run locally
+## Run locally (PHP server)
 
 ```bash
-python3 -m http.server 8080
+php -S 0.0.0.0:8080
 ```
 
 Open: `http://localhost:8080`
 
-## Deploy to GitHub Pages
+## API routes
+- `api.php?action=news`
+- `api.php?action=questions`
 
-1. Push files to repo root.
-2. GitHub → Settings → Pages.
-3. Source: deploy from `main` root.
-4. Open generated URL.
-
-## Important note
-
-This is static frontend MVP. For production reliability/security, move all news fetching to a backend API and keep the key server-side.
+## Note
+For production, move API key to environment config and add database-backed auth/attempt storage.
