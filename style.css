@@ -1,4 +1,13 @@
 :root {
+  --bg: #0b1220;
+  --card: #121a2b;
+  --card-2: #0f1727;
+  --primary: #2d8cff;
+  --accent: #1fbf75;
+  --danger: #e5484d;
+  --text: #e6edf7;
+  --muted: #9db0cd;
+  --border: #26354f;
   --bg: #f3f7fb;
   --card: #ffffff;
   --primary: #0a4da2;
@@ -9,6 +18,45 @@
 
 body {
   margin: 0;
+  background: radial-gradient(circle at top, #13203b 0%, #090f1c 60%);
+  color: var(--text);
+  font-family: Inter, Segoe UI, Roboto, Arial, sans-serif;
+}
+
+.hero {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  backdrop-filter: blur(6px);
+  background: rgba(9, 15, 28, 0.9);
+  border-bottom: 1px solid var(--border);
+}
+
+.hero-inner {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 14px 14px;
+}
+
+.hero h1 { margin: 0 0 4px; font-size: 1.5rem; }
+.hero p { margin: 0 0 10px; color: var(--muted); }
+
+.hero-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.hero-stats span {
+  background: #192746;
+  border: 1px solid var(--border);
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 0.86rem;
+}
+
+main {
+  max-width: 1120px;
   font-family: Arial, sans-serif;
   background: var(--bg);
   color: var(--text);
@@ -30,6 +78,10 @@ main {
 }
 
 .card {
+  background: linear-gradient(180deg, var(--card), var(--card-2));
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px;
   background: var(--card);
   border-radius: 10px;
   padding: 14px;
@@ -40,6 +92,29 @@ main {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.sub { color: var(--muted); margin: 8px 0 12px; }
+
+input, button {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: #16233f;
+  color: var(--text);
+}
+
+button {
+  background: var(--primary);
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+button.secondary { background: var(--accent); }
+button.danger { background: var(--danger); }
   gap: 8px;
   flex-wrap: wrap;
 }
@@ -66,6 +141,44 @@ button.danger { background: #ad1f2e; }
   gap: 8px;
 }
 
+#news-list li {
+  margin-bottom: 8px;
+  line-height: 1.45;
+}
+
+#news-list a {
+  color: #9bccff;
+  text-decoration: none;
+}
+
+#news-list a:hover { text-decoration: underline; }
+
+#quiz-form {
+  max-height: 60vh;
+  overflow: auto;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 8px;
+}
+
+.question {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 8px;
+}
+
+.question h4 {
+  margin: 0 0 8px;
+  color: #cfe1ff;
+  font-size: 0.97rem;
+}
+
+.actions { margin-top: 10px; }
+
+@media (max-width: 760px) {
+  #auth-form { grid-template-columns: 1fr; }
+  .hero h1 { font-size: 1.1rem; }
 .question {
   border: 1px solid #e4e7ec;
   border-radius: 8px;

@@ -3,6 +3,20 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JOA IT Prep Pro</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="hero">
+    <div class="hero-inner">
+      <h1>HPSSC / HPRCA JOA (IT) Smart Prep</h1>
+      <p>Hard-Level Quiz • Current Affairs • Himachal GK • Leaderboard</p>
+      <div class="hero-stats">
+        <span id="question-count">Questions: 140</span>
+        <span id="news-count">News: 10 latest</span>
+        <span id="news-timer">Refreshing every 60s</span>
+      </div>
+    </div>
   <title>JOA IT Prep MVP</title>
   <link rel="stylesheet" href="style.css" />
 </head>
@@ -14,6 +28,7 @@
 
   <main>
     <section class="card" id="auth-card">
+      <h2>Quick Login</h2>
       <h2>Login / Register</h2>
       <form id="auth-form">
         <input id="name" placeholder="Name" required />
@@ -26,6 +41,9 @@
     <section class="card">
       <div class="row">
         <h2>Live Exam-Relevant Current Affairs</h2>
+        <button id="refresh-news" class="secondary">Refresh News</button>
+      </div>
+      <p class="sub">Auto-updates every 1 minute • Showing 10 items • Non-repeat where possible</p>
         <span id="news-timer">Refreshing every 60s</span>
       </div>
       <button id="refresh-news" class="secondary">Refresh News Now</button>
@@ -34,12 +52,21 @@
 
     <section class="card">
       <div class="row">
+        <h2>Hard Quiz (100 Questions / Attempt)</h2>
+        <div class="row">
         <h2>Quiz (10 Questions)</h2>
         <div>
           <span id="quiz-meta"></span>
           <button id="refresh-quiz" class="secondary">Refresh Questions</button>
         </div>
       </div>
+      <p class="sub">Syllabus: Computer, Excel, Networking, DBMS, Cyber Security, Current Affairs, Himachal GK</p>
+      <div class="row">
+        <span id="quiz-timer">Timer: 60:00</span>
+        <span id="quiz-progress">Answered: 0/100</span>
+      </div>
+      <form id="quiz-form"></form>
+      <div class="row actions">
       <form id="quiz-form"></form>
       <div class="row">
         <button id="submit-quiz">Submit Quiz</button>
@@ -49,6 +76,7 @@
     </section>
 
     <section class="card">
+      <h2>Leaderboard</h2>
       <h2>Daily Leaderboard (Local MVP)</h2>
       <ol id="leaderboard-list"></ol>
     </section>
